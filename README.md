@@ -10,9 +10,11 @@ http://www.kumamotokokufu-h.ed.jp/kumamoto/bungaku/wa_seireki.html
 
 使い方
 ------
-    import rfGengou
-    (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2011, 6, 9))
-    datetime = print rfGengou.g2s(rfGengou.HEISEI.gengou, 23, 6, 9)
+    >>> import rfGengou
+    >>> (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2011, 6, 9))
+    >>> datetime = rfGengou.g2s(rfGengou.HEISEI.gengou, 23, 6, 9)
+    >>> print datetime
+    2011-06-09 00:00:00
 
 注意！
 ------

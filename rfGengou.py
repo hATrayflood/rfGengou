@@ -8,9 +8,13 @@
 #   http://www.kumamotokokufu-h.ed.jp/kumamoto/bungaku/wa_seireki.html
 #
 # 使い方：
-#  import rfGengou
-#  (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2011, 6, 9))
-#  datetime = print rfGengou.g2s(rfGengou.HEISEI.gengou, 23, 6, 9)
+u"""
+>>> import rfGengou
+>>> (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2011, 6, 9))
+>>> datetime = rfGengou.g2s(rfGengou.HEISEI.gengou, 23, 6, 9)
+>>> print datetime
+2011-06-09 00:00:00
+"""
 #
 # 注意！：
 #  平成の最終日は2087/12/31(平成99年)と仮定しています。根拠はなし。
@@ -56,107 +60,93 @@ GENGOU_LIST = [HEISEI, SHOUWA, TAISHOU, MEIJI]
 #GENGOU_LIST = [MEIJI, TAISHOU, SHOUWA, HEISEI]
 
 def s2g(date, gengou = None):
+	u"""
+	>>> print s2g(datetime.date(1868,  9,  7))
+	None
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1868,  9,  8))
+	明治  1年  9月  8日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1912,  7, 30))
+	大正  1年  7月 30日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1926, 12, 25))
+	昭和  1年 12月 25日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1989,  1,  7))
+	昭和 64年  1月  7日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1989,  1,  8))
+	平成  1年  1月  8日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(2087, 12, 31))
+	平成 99年 12月 31日
+	>>> print s2g(datetime.date(2088,  1,  1))
+	None
+
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
+	平成 -120年  9月  7日
+	>>> print u"%s %2d年 %2d月 %2d日" % s2g(datetime.date(2868,  9,  7), HEISEI.gengou)
+	平成 880年  9月  7日
+	"""
 	d = datetime.date(date.year, date.month, date.day)
 	for n in GENGOU_LIST:
 		if n.inboundS(d) or n.gengou == gengou:
 			return n.adjustS(d)
 
 def g2s(gengou, year, month, day, strict = True):
+	u"""
+	>>> print g2s(MEIJI.gengou  ,  1,  9,  7)
+	None
+	>>> print g2s(MEIJI.gengou  ,  1,  9,  8)
+	1868-09-08 00:00:00
+	>>> print g2s(MEIJI.gengou  , 45,  7, 30)
+	1912-07-30 00:00:00
+	>>> print g2s(MEIJI.gengou  , 45,  7, 31)
+	None
+	>>> print g2s(TAISHOU.gengou,  1,  7, 29)
+	None
+	>>> print g2s(TAISHOU.gengou,  1,  7, 30)
+	1912-07-30 00:00:00
+	>>> print g2s(TAISHOU.gengou, 15, 12, 25)
+	1926-12-25 00:00:00
+	>>> print g2s(TAISHOU.gengou, 15, 12, 26)
+	None
+	>>> print g2s(SHOUWA.gengou ,  1, 12, 24)
+	None
+	>>> print g2s(SHOUWA.gengou ,  1, 12, 25)
+	1926-12-25 00:00:00
+	>>> print g2s(SHOUWA.gengou , 64,  1,  7)
+	1989-01-07 00:00:00
+	>>> print g2s(SHOUWA.gengou , 64,  1,  8)
+	None
+	>>> print g2s(HEISEI.gengou ,  1,  1,  7)
+	None
+	>>> print g2s(HEISEI.gengou ,  1,  1,  8)
+	1989-01-08 00:00:00
+	>>> print g2s(HEISEI.gengou , 99, 12, 31)
+	2087-12-31 00:00:00
+	>>> print g2s(HEISEI.gengou ,100,  1,  1)
+	None
+
+	>>> print g2s(HEISEI.gengou, -63,  1,  1, False)
+	1925-01-01 00:00:00
+	>>> print g2s(HEISEI.gengou, 163,  1,  1, False)
+	2151-01-01 00:00:00
+	"""
 	for n in GENGOU_LIST:
 		if n.inboundG(gengou, year, month, day) or not strict:
 			return n.adjustG(year, month, day)
 
-# テスト
+def zmain():
+	u"""
+	doctestの実行を最後に持っていきたいので、あえて"zmain()"という名前
+	>>> import rfGengou
+	>>> taika = rfGengou.rfGengou(u"大化"  , datetime.datetime( 645,  6, 19), datetime.datetime( 650,  2, 15))
+	>>> uchuu = rfGengou.rfGengou(u"宇宙暦", datetime.datetime(2087,  3,  7), datetime.datetime(9999, 12, 31))
+	>>> rfGengou.GENGOU_LIST.append(taika)
+	>>> rfGengou.GENGOU_LIST.append(uchuu)
+	>>> print u"%s %2d年 %2d月 %2d日" % rfGengou.s2g(datetime.date(646,  1,  1))
+	大化  2年  1月  1日
+	>>> print rfGengou.g2s(uchuu.gengou, 772,  1,  1)
+	2858-01-01 00:00:00
+	"""
+	import doctest
+	doctest.testmod()
+
 if __name__ == "__main__":
-	def p_s2g(date, gengou = None):
-		s = str(date) + " : "
-		o = s2g(date, gengou)
-		if o:
-			s += u"%s %2d年 %2d月 %2d日" % o
-		else:
-			s += str(o)
-		print(s)
-
-	def p_g2s(gengou, year, month, day, strict = True):
-		s  = u"%s %2d年 %2d月 %2d日 " % (gengou, year, month, day)
-		s += " : " + str(g2s(gengou, year, month, day, strict))
-		print(s)
-
-	"""
-	1868-09-07 : None
-	1868-09-08 : 明治  1年  9月  8日
-	1912-07-30 : 大正  1年  7月 30日
-	1926-12-25 : 昭和  1年 12月 25日
-	1989-01-07 : 昭和 64年  1月  7日
-	1989-01-08 : 平成  1年  1月  8日
-	2087-12-31 : 平成 99年 12月 31日
-	2088-01-01 : None
-	"""
-	p_s2g(datetime.date(1868,  9,  7))
-	p_s2g(datetime.date(1868,  9,  8))
-	p_s2g(datetime.date(1912,  7, 30))
-	p_s2g(datetime.date(1926, 12, 25))
-	p_s2g(datetime.date(1989,  1,  7))
-	p_s2g(datetime.date(1989,  1,  8))
-	p_s2g(datetime.date(2087, 12, 31))
-	p_s2g(datetime.date(2088,  1,  1))
-
-	print
-	"""
-	明治  1年  9月  7日  : None
-	明治  1年  9月  8日  : 1868-09-08 00:00:00
-	明治 45年  7月 30日  : 1912-07-30 00:00:00
-	明治 45年  7月 31日  : None
-	大正  1年  7月 29日  : None
-	大正  1年  7月 30日  : 1912-07-30 00:00:00
-	大正 15年 12月 25日  : 1926-12-25 00:00:00
-	大正 15年 12月 26日  : None
-	昭和  1年 12月 24日  : None
-	昭和  1年 12月 25日  : 1926-12-25 00:00:00
-	昭和 64年  1月  7日  : 1989-01-07 00:00:00
-	昭和 64年  1月  8日  : None
-	平成  1年  1月  7日  : None
-	平成  1年  1月  8日  : 1989-01-08 00:00:00
-	平成 99年 12月 31日  : 2087-12-31 00:00:00
-	平成 100年  1月  1日  : None
-	"""
-	p_g2s(MEIJI.gengou  ,  1,  9,  7)
-	p_g2s(MEIJI.gengou  ,  1,  9,  8)
-	p_g2s(MEIJI.gengou  , 45,  7, 30)
-	p_g2s(MEIJI.gengou  , 45,  7, 31)
-	p_g2s(TAISHOU.gengou,  1,  7, 29)
-	p_g2s(TAISHOU.gengou,  1,  7, 30)
-	p_g2s(TAISHOU.gengou, 15, 12, 25)
-	p_g2s(TAISHOU.gengou, 15, 12, 26)
-	p_g2s(SHOUWA.gengou ,  1, 12, 24)
-	p_g2s(SHOUWA.gengou ,  1, 12, 25)
-	p_g2s(SHOUWA.gengou , 64,  1,  7)
-	p_g2s(SHOUWA.gengou , 64,  1,  8)
-	p_g2s(HEISEI.gengou ,  1,  1,  7)
-	p_g2s(HEISEI.gengou ,  1,  1,  8)
-	p_g2s(HEISEI.gengou , 99, 12, 31)
-	p_g2s(HEISEI.gengou , 100,  1,  1)
-
-	print
-	"""
-	1868-09-07 : 平成 -120年  9月  7日
-	2868-09-07 : 平成 880年  9月  7日
-	平成 -63年  1月  1日  : 1925-01-01 00:00:00
-	平成 163年  1月  1日  : 2151-01-01 00:00:00
-	"""
-	p_s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
-	p_s2g(datetime.date(2868,  9,  7), HEISEI.gengou)
-	p_g2s(HEISEI.gengou, -63,  1,  1, False)
-	p_g2s(HEISEI.gengou, 163,  1,  1, False)
-
-	print
-	"""
-	0646-01-01 : 大化  2年  1月  1日
-	宇宙暦 772年  1月  1日  : 2858-01-01 00:00:00
-	"""
-	taika = rfGengou(u"大化"  , datetime.datetime( 645,  6, 19), datetime.datetime( 650,  2, 15))
-	uchuu = rfGengou(u"宇宙暦", datetime.datetime(2087,  3,  7), datetime.datetime(9999, 12, 31))
-	GENGOU_LIST.append(taika)
-	GENGOU_LIST.append(uchuu)
-	p_s2g(datetime.date(646,  1,  1))
-	p_g2s(uchuu.gengou, 772,  1,  1)
+	zmain()
