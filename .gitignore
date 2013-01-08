@@ -1,1 +1,3 @@
 *.pyc
+release/ppa
+release/rfGengou-*
