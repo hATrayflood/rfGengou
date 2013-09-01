@@ -1,6 +1,6 @@
 rfGengou
 ========
-http://rayflood.org/diary-temp/rfGengou-0.2.zip  
+http://rayflood.org/diary-temp/rfGengou-0.3.zip  
 rfGengou.py 明治から平成までの元号と西暦を変換するライブラリです。
 * 日単位で判定、年単位で変換できます。
 * 通常は元号の有効範囲内で計算するため、元号の年月日のチェックにも使えます。
@@ -25,9 +25,18 @@ http://www.kumamotokokufu-h.ed.jp/kumamoto/bungaku/wa_seireki.html
 あくまで判定が日単位なだけです。旧暦などの日数シフトは対応していません。  
 pythonのdatetimeの制約により、西暦換算で1年から9999年まで計算可能です。  
 
+コマンドラインツール
+--------------------
+rfgengou コマンドが使えます。
+日付を引数に指定すると変換処理を行います。
+
 github
 ------
 https://github.com/hATrayflood/rfGengou
+
+launchpad
+---------
+https://launchpad.net/~h-rayflood/+archive/python2
 
 License
 -------

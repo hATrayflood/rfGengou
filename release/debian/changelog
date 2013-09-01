@@ -1,3 +1,10 @@
+python-rfgengou (0.3-1nmu1ppa1~@@SERIES@@) @@SERIES@@; urgency=low
+
+  * add command line tools.
+  * add gengou alias.
+
+ -- ABE Hiroki (hATrayflood) <h.rayflood@gmail.com>  Mon, 02 Sep 2013 02:10:00 +0900
+
 python-rfgengou (0.2-1nmu1ppa1~@@SERIES@@) @@SERIES@@; urgency=low
 
   * ppa for @@SERIES@@
