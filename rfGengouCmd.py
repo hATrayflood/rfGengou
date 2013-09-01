@@ -29,4 +29,8 @@ else:
 		gengou = gengou_map[unicode(options.gengou, sys.stdin.encoding)]
 	else:
 		gengou = None
-	print(u'%s %d %d %d' % rfGengou.s2g(date, gengou))
+	date = rfGengou.s2g(date, gengou)
+	if date:
+		print(u'%s %d %d %d' % date)
+	else:
+		print
