@@ -26,7 +26,7 @@ else:
 	else:
 		date = datetime.datetime.now()
 	if options.gengou:
-		gengou = gengou_map[unicode(options.gengou, sys.stdin.encoding)].gengou
+		gengou = gengou_map[unicode(options.gengou, sys.stdin.encoding)]
 	else:
 		gengou = None
 	print(u'%s %d %d %d' % rfGengou.s2g(date, gengou))

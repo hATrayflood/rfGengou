@@ -51,18 +51,24 @@ class rfGengou:
 		>>> print rfgg.s2g(datetime.date(2088,  1,  1))
 		None
 
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI)
 		平成 -120年  9月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI.gengou)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI)
 		平成 880年  9月  7日
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), TAISHOU)
+		大正 39年  1月  1日
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), HEISEI)
+		平成 -38年  1月  1日
 		>>> taika = rfGengouRange(u"大化"  , datetime.datetime( 645,  6, 19), datetime.datetime( 650,  2, 15))
 		>>> rfgg.GENGOU_LIST.append(taika)
 		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(646,  1,  1))
 		大化  2年  1月  1日
 		"""
 		d = datetime.date(date.year, date.month, date.day)
+		if gengou:
+			return gengou.adjustS(d)
 		for n in self.GENGOU_LIST:
-			if n.inboundS(d) or n.gengou == gengou:
+			if n.inboundS(d):
 				return n.adjustS(d)
 
 	def g2s(self, gengou, year, month, day, strict = True):
