@@ -25,6 +25,7 @@ u"""
 #  pythonのdatetimeの制約により、西暦換算で1年から9999年まで計算可能です。
 
 import datetime
+import re
 
 class rfGengou:
 	def __init__(self):
@@ -51,13 +52,13 @@ class rfGengou:
 		>>> print rfgg.s2g(datetime.date(2088,  1,  1))
 		None
 
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
 		平成 -120年  9月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI.gengou)
 		平成 880年  9月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), TAISHOU)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), TAISHOU.gengou)
 		大正 39年  1月  1日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), HEISEI)
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), HEISEI.gengou)
 		平成 -38年  1月  1日
 		>>> taika = rfGengouRange(u"大化"  , datetime.datetime( 645,  6, 19), datetime.datetime( 650,  2, 15))
 		>>> rfgg.GENGOU_LIST.append(taika)
@@ -66,10 +67,13 @@ class rfGengou:
 		"""
 		d = datetime.date(date.year, date.month, date.day)
 		if gengou:
-			return gengou.adjustS(d)
-		for n in self.GENGOU_LIST:
-			if n.inboundS(d):
-				return n.adjustS(d)
+			for n in self.GENGOU_LIST:
+				if n.gengou_match(gengou):
+					return n.adjustS(d)
+		else:
+			for n in self.GENGOU_LIST:
+				if n.inboundS(d):
+					return n.adjustS(d)
 
 	def g2s(self, gengou, year, month, day, strict = True):
 		u"""
@@ -107,25 +111,89 @@ class rfGengou:
 		>>> print rfgg.g2s(HEISEI.gengou ,100,  1,  1)
 		None
 
+		>>> print rfgg.g2s(u"㍾"     ,  1,  9,  8)
+		1868-09-08 00:00:00
+		>>> print rfgg.g2s(u"Ｍ"     ,  1,  9,  8)
+		1868-09-08 00:00:00
+		>>> print rfgg.g2s(u"ｍ"     ,  1,  9,  8)
+		1868-09-08 00:00:00
+		>>> print rfgg.g2s(u"m"      ,  1,  9,  8)
+		1868-09-08 00:00:00
+		>>> print rfgg.g2s(u"Me-ji"  ,  1,  9,  8)
+		1868-09-08 00:00:00
+		>>> print rfgg.g2s(u"mezi"   ,  1,  9,  8)
+		1868-09-08 00:00:00
+
+		>>> print rfgg.g2s(u"㍽"     ,  1,  7, 30)
+		1912-07-30 00:00:00
+		>>> print rfgg.g2s(u"Ｔ"     ,  1,  7, 30)
+		1912-07-30 00:00:00
+		>>> print rfgg.g2s(u"ｔ"     ,  1,  7, 30)
+		1912-07-30 00:00:00
+		>>> print rfgg.g2s(u"t"      ,  1,  7, 30)
+		1912-07-30 00:00:00
+		>>> print rfgg.g2s(u"Taisho-",  1,  7, 30)
+		1912-07-30 00:00:00
+		>>> print rfgg.g2s(u"taisyo" ,  1,  7, 30)
+		1912-07-30 00:00:00
+
+		>>> print rfgg.g2s(u"㍼"     ,  1, 12, 25)
+		1926-12-25 00:00:00
+		>>> print rfgg.g2s(u"Ｓ"     ,  1, 12, 25)
+		1926-12-25 00:00:00
+		>>> print rfgg.g2s(u"ｓ"     ,  1, 12, 25)
+		1926-12-25 00:00:00
+		>>> print rfgg.g2s(u"s"      ,  1, 12, 25)
+		1926-12-25 00:00:00
+		>>> print rfgg.g2s(u"Sho-wa" ,  1, 12, 25)
+		1926-12-25 00:00:00
+		>>> print rfgg.g2s(u"syowa"  ,  1, 12, 25)
+		1926-12-25 00:00:00
+
+		>>> print rfgg.g2s(u"㍻"     ,  1,  1,  8)
+		1989-01-08 00:00:00
+		>>> print rfgg.g2s(u"Ｈ"     ,  1,  1,  8)
+		1989-01-08 00:00:00
+		>>> print rfgg.g2s(u"ｈ"     ,  1,  1,  8)
+		1989-01-08 00:00:00
+		>>> print rfgg.g2s(u"h"      ,  1,  1,  8)
+		1989-01-08 00:00:00
+		>>> print rfgg.g2s(u"Heise"  ,  1,  1,  8)
+		1989-01-08 00:00:00
+		>>> print rfgg.g2s(u"he-seH" ,  1,  1,  8)
+		1989-01-08 00:00:00
+
 		>>> print rfgg.g2s(HEISEI.gengou, -63,  1,  1, False)
 		1925-01-01 00:00:00
 		>>> print rfgg.g2s(HEISEI.gengou, 163,  1,  1, False)
 		2151-01-01 00:00:00
+		>>> print rfgg.g2s(MEIJI.gengou ,  50,  1,  1, False)
+		1917-01-01 00:00:00
+		>>> print rfgg.g2s(SHOUWA.gengou, -10,  1,  1, False)
+		1915-01-01 00:00:00
 		>>> uchuu = rfGengouRange(u"宇宙暦", datetime.datetime(2087,  3,  7), datetime.datetime(9999, 12, 31))
 		>>> rfgg.GENGOU_LIST.append(uchuu)
 		>>> print rfgg.g2s(uchuu.gengou, 772,  1,  1)
 		2858-01-01 00:00:00
 		"""
 		for n in self.GENGOU_LIST:
-			if n.inboundG(gengou, year, month, day) or not strict:
-				return n.adjustG(year, month, day)
+			if n.gengou_match(gengou):
+				if n.inboundG(year, month, day) or not strict:
+					return n.adjustG(year, month, day)
 
 class rfGengouRange:
-	def __init__(self, gengou, start, end):
-		self.gengou = gengou
-		self.start  = start
-		self.end    = end
-		self.diffyear  = start.year - 1
+	def __init__(self, gengou, start, end, alias=None):
+		self.gengou   = gengou
+		self.start    = start
+		self.end      = end
+		self.diffyear = start.year - 1
+		if alias:
+			self.alias = re.compile(alias, re.I)
+		else:
+			self.alias = None
+
+	def gengou_match(self, gengou):
+		return self.gengou == gengou or bool(self.alias and self.alias.match(gengou))
 
 	def inboundS(self, date):
 		d = datetime.datetime(date.year, date.month, date.day)
@@ -135,9 +203,7 @@ class rfGengouRange:
 			return False
 		return True
 
-	def inboundG(self, gengou, year, month, day):
-		if not self.gengou == gengou:
-			return False
+	def inboundG(self, year, month, day):
 		return self.inboundS(self.adjustG(year, month, day))
 
 	def adjustS(self, date):
@@ -146,10 +212,10 @@ class rfGengouRange:
 	def adjustG(self, year, month, day):
 		return datetime.datetime(year + self.diffyear, month, day)
 
-HEISEI  = rfGengouRange(u"平成", datetime.datetime(1989,  1,  8), datetime.datetime(2087, 12, 31))
-SHOUWA  = rfGengouRange(u"昭和", datetime.datetime(1926, 12, 25), datetime.datetime(1989,  1,  7))
-TAISHOU = rfGengouRange(u"大正", datetime.datetime(1912,  7, 30), datetime.datetime(1926, 12, 25))
-MEIJI   = rfGengouRange(u"明治", datetime.datetime(1868,  9,  8), datetime.datetime(1912,  7, 30))
+HEISEI  = rfGengouRange(u"平成", datetime.datetime(1989,  1,  8), datetime.datetime(2087, 12, 31), u"^㍻$|^Ｈ$|^ｈ$|^H$|^he[ih-]?se[ih-]?$")
+SHOUWA  = rfGengouRange(u"昭和", datetime.datetime(1926, 12, 25), datetime.datetime(1989,  1,  7), u"^㍼$|^Ｓ$|^ｓ$|^S$|^s[hy]o[uh-]?wa$")
+TAISHOU = rfGengouRange(u"大正", datetime.datetime(1912,  7, 30), datetime.datetime(1926, 12, 25), u"^㍽$|^Ｔ$|^ｔ$|^T$|^tais[hy]o[uh-]?$")
+MEIJI   = rfGengouRange(u"明治", datetime.datetime(1868,  9,  8), datetime.datetime(1912,  7, 30), u"^㍾$|^Ｍ$|^ｍ$|^M$|^me[ih-]?[jz]i$")
 
 def s2g(date, gengou = None):
 	return rfGengou().s2g(date, gengou)
