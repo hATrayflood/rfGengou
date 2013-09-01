@@ -1,0 +1,35 @@
+#!/bin/sh
+
+PARENT=`dirname $0`
+if test "$PYTHON" ; then
+PYTHON=`which $PYTHON`
+fi
+
+if test -z "$PYTHON" ; then
+PYTHON=`which $PARENT/python2.7`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which $PARENT/python2.6`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which $PARENT/python2.5`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which $PARENT/python`
+fi
+
+if test -z "$PYTHON" ; then
+PYTHON=`which python2.7`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which python2.6`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which python2.5`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which python`
+fi
+
+$PYTHON $PARENT/rfGengouCmd.py $*
+exit $?
