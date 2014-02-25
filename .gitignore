@@ -1,3 +1,4 @@
 *.pyc
+.pypirc
 release/lucid
 release/precise

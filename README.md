@@ -1,6 +1,6 @@
 rfGengou
 ========
-http://rayflood.org/diary-temp/rfGengou-0.3.zip  
+https://pypi.python.org/packages/source/r/rfGengou/rfGengou-0.3.zip  
 rfGengou.py 明治から平成までの元号と西暦を変換するライブラリです。
 * 日単位で判定、年単位で変換できます。
 * 通常は元号の有効範囲内で計算するため、元号の年月日のチェックにも使えます。
@@ -33,6 +33,10 @@ rfgengou コマンドが使えます。
 github
 ------
 https://github.com/hATrayflood/rfGengou
+
+pypi
+----
+https://pypi.python.org/pypi/rfGengou
 
 launchpad
 ---------
