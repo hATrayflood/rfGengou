@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# rfGengou.py 明治から平成までの元号と西暦を変換するライブラリです。
+# rfGengou.py 明治から令和までの元号と西暦を変換するライブラリです。
 # ・日単位で判定、年単位で変換できます。
 # ・通常は元号の有効範囲内で計算するため、元号の年月日のチェックにも使えます。
 # ・追加引数を指定することで、元号の有効範囲を超えた仮想年数も計算できます。
@@ -10,15 +10,15 @@
 # 使い方：
 u"""
 >>> import rfGengou
->>> (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2011, 6, 9))
->>> datetime = rfGengou.g2s(rfGengou.HEISEI.gengou, 23, 6, 9)
+>>> (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2019, 5, 18))
+>>> datetime = rfGengou.g2s(rfGengou.REIWA.gengou, 1, 5, 18)
 >>> print datetime
-2011-06-09 00:00:00
+2019-05-18 00:00:00
 """
 #
 # 注意！：
-#  平成の最終日は2087/12/31(平成99年)と仮定しています。根拠はなし。
-#  明治より前の元号、平成の次の元号は対応していません。
+#  令和の最終日は2117/12/31(令和99年)と仮定しています。根拠はなし。
+#  明治より前の元号、令和の次の元号は対応していません。
 #  明治の最終日と大正の初日、大正の最終日と昭和の初日が重複しています。
 #  ここでは次の元号の初日を優先してます。
 #  あくまで判定が日単位なだけです。旧暦などの日数シフトは対応していません。
@@ -29,8 +29,8 @@ import re
 
 class rfGengou:
 	def __init__(self):
-		self.GENGOU_LIST = [HEISEI, SHOUWA, TAISHOU, MEIJI]
-		#self.GENGOU_LIST = [MEIJI, TAISHOU, SHOUWA, HEISEI]
+		self.GENGOU_LIST = [REIWA, HEISEI, SHOUWA, TAISHOU, MEIJI]
+		#self.GENGOU_LIST = [MEIJI, TAISHOU, SHOUWA, HEISEI, REIWA]
 
 	def s2g(self, date, gengou = None):
 		u"""
@@ -47,9 +47,13 @@ class rfGengou:
 		昭和 64年  1月  7日
 		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1989,  1,  8))
 		平成  1年  1月  8日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2087, 12, 31))
-		平成 99年 12月 31日
-		>>> print rfgg.s2g(datetime.date(2088,  1,  1))
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  4, 30))
+		平成 31年  4月 30日
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  5,  1))
+		令和  1年  5月  1日
+		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2117, 12, 31))
+		令和 99年 12月 31日
+		>>> print rfgg.s2g(datetime.date(2119,  1,  1))
 		None
 
 		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
@@ -106,9 +110,17 @@ class rfGengou:
 		None
 		>>> print rfgg.g2s(HEISEI.gengou ,  1,  1,  8)
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(HEISEI.gengou , 99, 12, 31)
-		2087-12-31 00:00:00
-		>>> print rfgg.g2s(HEISEI.gengou ,100,  1,  1)
+		>>> print rfgg.g2s(HEISEI.gengou , 31,  4, 30)
+		2019-04-30 00:00:00
+		>>> print rfgg.g2s(HEISEI.gengou , 31,  5,  1)
+		None
+		>>> print rfgg.g2s(REIWA.gengou  ,  1,  4, 30)
+		None
+		>>> print rfgg.g2s(REIWA.gengou  ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(REIWA.gengou  , 99, 12, 31)
+		2117-12-31 00:00:00
+		>>> print rfgg.g2s(REIWA.gengou  ,100,  1,  1)
 		None
 
 		>>> print rfgg.g2s(u"㍾"     ,  1,  9,  8)
@@ -163,6 +175,19 @@ class rfGengou:
 		>>> print rfgg.g2s(u"he-seH" ,  1,  1,  8)
 		1989-01-08 00:00:00
 
+		>>> print rfgg.g2s(u"㋿"     ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(u"Ｒ"     ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(u"ｒ"     ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(u"r"      ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(u"Reiwa"  ,  1,  5,  1)
+		2019-05-01 00:00:00
+		>>> print rfgg.g2s(u"re-wa"  ,  1,  5,  1)
+		2019-05-01 00:00:00
+
 		>>> print rfgg.g2s(HEISEI.gengou, -63,  1,  1, False)
 		1925-01-01 00:00:00
 		>>> print rfgg.g2s(HEISEI.gengou, 163,  1,  1, False)
@@ -212,7 +237,8 @@ class rfGengouRange:
 	def adjustG(self, year, month, day):
 		return datetime.datetime(year + self.diffyear, month, day)
 
-HEISEI  = rfGengouRange(u"平成", datetime.datetime(1989,  1,  8), datetime.datetime(2087, 12, 31), u"^㍻$|^Ｈ$|^ｈ$|^H$|^he[ih-]?se[ih-]?$")
+REIWA   = rfGengouRange(u"令和", datetime.datetime(2019,  5,  1), datetime.datetime(2117, 12, 31), u"^㋿$|^Ｒ$|^ｒ$|^R$|^re[ih-]?wa$")
+HEISEI  = rfGengouRange(u"平成", datetime.datetime(1989,  1,  8), datetime.datetime(2019,  4, 30), u"^㍻$|^Ｈ$|^ｈ$|^H$|^he[ih-]?se[ih-]?$")
 SHOUWA  = rfGengouRange(u"昭和", datetime.datetime(1926, 12, 25), datetime.datetime(1989,  1,  7), u"^㍼$|^Ｓ$|^ｓ$|^S$|^s[hy]o[uh-]?wa$")
 TAISHOU = rfGengouRange(u"大正", datetime.datetime(1912,  7, 30), datetime.datetime(1926, 12, 25), u"^㍽$|^Ｔ$|^ｔ$|^T$|^tais[hy]o[uh-]?$")
 MEIJI   = rfGengouRange(u"明治", datetime.datetime(1868,  9,  8), datetime.datetime(1912,  7, 30), u"^㍾$|^Ｍ$|^ｍ$|^M$|^me[ih-]?[jz]i$")
