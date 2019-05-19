@@ -12,7 +12,7 @@ u"""
 >>> import rfGengou
 >>> (gengou, year, month, day) = rfGengou.s2g(datetime.datetime(2019, 5, 18))
 >>> datetime = rfGengou.g2s(rfGengou.REIWA.gengou, 1, 5, 18)
->>> print datetime
+>>> print(datetime)
 2019-05-18 00:00:00
 """
 #
@@ -35,38 +35,38 @@ class rfGengou:
 	def s2g(self, date, gengou = None):
 		u"""
 		>>> rfgg = rfGengou()
-		>>> print rfgg.s2g(datetime.date(1868,  9,  7))
+		>>> print(rfgg.s2g(datetime.date(1868,  9,  7)))
 		None
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  8))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  8)))
 		明治  1年  9月  8日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1912,  7, 30))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1912,  7, 30)))
 		大正  1年  7月 30日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1926, 12, 25))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1926, 12, 25)))
 		昭和  1年 12月 25日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1989,  1,  7))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1989,  1,  7)))
 		昭和 64年  1月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1989,  1,  8))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1989,  1,  8)))
 		平成  1年  1月  8日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  4, 30))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  4, 30)))
 		平成 31年  4月 30日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  5,  1))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2019,  5,  1)))
 		令和  1年  5月  1日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2117, 12, 31))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2117, 12, 31)))
 		令和 99年 12月 31日
-		>>> print rfgg.s2g(datetime.date(2119,  1,  1))
+		>>> print(rfgg.s2g(datetime.date(2119,  1,  1)))
 		None
 
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI.gengou)
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1868,  9,  7), HEISEI.gengou))
 		平成 -120年  9月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI.gengou)
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(2868,  9,  7), HEISEI.gengou))
 		平成 880年  9月  7日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), TAISHOU.gengou)
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), TAISHOU.gengou))
 		大正 39年  1月  1日
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), HEISEI.gengou)
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(1950,  1,  1), HEISEI.gengou))
 		平成 -38年  1月  1日
 		>>> taika = rfGengouRange(u"大化"  , datetime.datetime( 645,  6, 19), datetime.datetime( 650,  2, 15))
 		>>> rfgg.GENGOU_LIST.append(taika)
-		>>> print u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(646,  1,  1))
+		>>> print(u"%s %2d年 %2d月 %2d日" % rfgg.s2g(datetime.date(646,  1,  1)))
 		大化  2年  1月  1日
 		"""
 		d = datetime.date(date.year, date.month, date.day)
@@ -82,123 +82,123 @@ class rfGengou:
 	def g2s(self, gengou, year, month, day, strict = True):
 		u"""
 		>>> rfgg = rfGengou()
-		>>> print rfgg.g2s(MEIJI.gengou  ,  1,  9,  7)
+		>>> print(rfgg.g2s(MEIJI.gengou  ,  1,  9,  7))
 		None
-		>>> print rfgg.g2s(MEIJI.gengou  ,  1,  9,  8)
+		>>> print(rfgg.g2s(MEIJI.gengou  ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(MEIJI.gengou  , 45,  7, 30)
+		>>> print(rfgg.g2s(MEIJI.gengou  , 45,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(MEIJI.gengou  , 45,  7, 31)
+		>>> print(rfgg.g2s(MEIJI.gengou  , 45,  7, 31))
 		None
-		>>> print rfgg.g2s(TAISHOU.gengou,  1,  7, 29)
+		>>> print(rfgg.g2s(TAISHOU.gengou,  1,  7, 29))
 		None
-		>>> print rfgg.g2s(TAISHOU.gengou,  1,  7, 30)
+		>>> print(rfgg.g2s(TAISHOU.gengou,  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(TAISHOU.gengou, 15, 12, 25)
+		>>> print(rfgg.g2s(TAISHOU.gengou, 15, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(TAISHOU.gengou, 15, 12, 26)
+		>>> print(rfgg.g2s(TAISHOU.gengou, 15, 12, 26))
 		None
-		>>> print rfgg.g2s(SHOUWA.gengou ,  1, 12, 24)
+		>>> print(rfgg.g2s(SHOUWA.gengou ,  1, 12, 24))
 		None
-		>>> print rfgg.g2s(SHOUWA.gengou ,  1, 12, 25)
+		>>> print(rfgg.g2s(SHOUWA.gengou ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(SHOUWA.gengou , 64,  1,  7)
+		>>> print(rfgg.g2s(SHOUWA.gengou , 64,  1,  7))
 		1989-01-07 00:00:00
-		>>> print rfgg.g2s(SHOUWA.gengou , 64,  1,  8)
+		>>> print(rfgg.g2s(SHOUWA.gengou , 64,  1,  8))
 		None
-		>>> print rfgg.g2s(HEISEI.gengou ,  1,  1,  7)
+		>>> print(rfgg.g2s(HEISEI.gengou ,  1,  1,  7))
 		None
-		>>> print rfgg.g2s(HEISEI.gengou ,  1,  1,  8)
+		>>> print(rfgg.g2s(HEISEI.gengou ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(HEISEI.gengou , 31,  4, 30)
+		>>> print(rfgg.g2s(HEISEI.gengou , 31,  4, 30))
 		2019-04-30 00:00:00
-		>>> print rfgg.g2s(HEISEI.gengou , 31,  5,  1)
+		>>> print(rfgg.g2s(HEISEI.gengou , 31,  5,  1))
 		None
-		>>> print rfgg.g2s(REIWA.gengou  ,  1,  4, 30)
+		>>> print(rfgg.g2s(REIWA.gengou  ,  1,  4, 30))
 		None
-		>>> print rfgg.g2s(REIWA.gengou  ,  1,  5,  1)
+		>>> print(rfgg.g2s(REIWA.gengou  ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(REIWA.gengou  , 99, 12, 31)
+		>>> print(rfgg.g2s(REIWA.gengou  , 99, 12, 31))
 		2117-12-31 00:00:00
-		>>> print rfgg.g2s(REIWA.gengou  ,100,  1,  1)
+		>>> print(rfgg.g2s(REIWA.gengou  ,100,  1,  1))
 		None
 
-		>>> print rfgg.g2s(u"㍾"     ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"㍾"     ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(u"Ｍ"     ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"Ｍ"     ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(u"ｍ"     ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"ｍ"     ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(u"m"      ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"m"      ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(u"Me-ji"  ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"Me-ji"  ,  1,  9,  8))
 		1868-09-08 00:00:00
-		>>> print rfgg.g2s(u"mezi"   ,  1,  9,  8)
+		>>> print(rfgg.g2s(u"mezi"   ,  1,  9,  8))
 		1868-09-08 00:00:00
 
-		>>> print rfgg.g2s(u"㍽"     ,  1,  7, 30)
+		>>> print(rfgg.g2s(u"㍽"     ,  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(u"Ｔ"     ,  1,  7, 30)
+		>>> print(rfgg.g2s(u"Ｔ"     ,  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(u"ｔ"     ,  1,  7, 30)
+		>>> print(rfgg.g2s(u"ｔ"     ,  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(u"t"      ,  1,  7, 30)
+		>>> print(rfgg.g2s(u"t"      ,  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(u"Taisho-",  1,  7, 30)
+		>>> print(rfgg.g2s(u"Taisho-",  1,  7, 30))
 		1912-07-30 00:00:00
-		>>> print rfgg.g2s(u"taisyo" ,  1,  7, 30)
+		>>> print(rfgg.g2s(u"taisyo" ,  1,  7, 30))
 		1912-07-30 00:00:00
 
-		>>> print rfgg.g2s(u"㍼"     ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"㍼"     ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(u"Ｓ"     ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"Ｓ"     ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(u"ｓ"     ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"ｓ"     ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(u"s"      ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"s"      ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(u"Sho-wa" ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"Sho-wa" ,  1, 12, 25))
 		1926-12-25 00:00:00
-		>>> print rfgg.g2s(u"syowa"  ,  1, 12, 25)
+		>>> print(rfgg.g2s(u"syowa"  ,  1, 12, 25))
 		1926-12-25 00:00:00
 
-		>>> print rfgg.g2s(u"㍻"     ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"㍻"     ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(u"Ｈ"     ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"Ｈ"     ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(u"ｈ"     ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"ｈ"     ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(u"h"      ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"h"      ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(u"Heise"  ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"Heise"  ,  1,  1,  8))
 		1989-01-08 00:00:00
-		>>> print rfgg.g2s(u"he-seH" ,  1,  1,  8)
+		>>> print(rfgg.g2s(u"he-seH" ,  1,  1,  8))
 		1989-01-08 00:00:00
 
-		>>> print rfgg.g2s(u"㋿"     ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"㋿"     ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(u"Ｒ"     ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"Ｒ"     ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(u"ｒ"     ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"ｒ"     ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(u"r"      ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"r"      ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(u"Reiwa"  ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"Reiwa"  ,  1,  5,  1))
 		2019-05-01 00:00:00
-		>>> print rfgg.g2s(u"re-wa"  ,  1,  5,  1)
+		>>> print(rfgg.g2s(u"re-wa"  ,  1,  5,  1))
 		2019-05-01 00:00:00
 
-		>>> print rfgg.g2s(HEISEI.gengou, -63,  1,  1, False)
+		>>> print(rfgg.g2s(HEISEI.gengou, -63,  1,  1, False))
 		1925-01-01 00:00:00
-		>>> print rfgg.g2s(HEISEI.gengou, 163,  1,  1, False)
+		>>> print(rfgg.g2s(HEISEI.gengou, 163,  1,  1, False))
 		2151-01-01 00:00:00
-		>>> print rfgg.g2s(MEIJI.gengou ,  50,  1,  1, False)
+		>>> print(rfgg.g2s(MEIJI.gengou ,  50,  1,  1, False))
 		1917-01-01 00:00:00
-		>>> print rfgg.g2s(SHOUWA.gengou, -10,  1,  1, False)
+		>>> print(rfgg.g2s(SHOUWA.gengou, -10,  1,  1, False))
 		1915-01-01 00:00:00
 		>>> uchuu = rfGengouRange(u"宇宙暦", datetime.datetime(2087,  3,  7), datetime.datetime(9999, 12, 31))
 		>>> rfgg.GENGOU_LIST.append(uchuu)
-		>>> print rfgg.g2s(uchuu.gengou, 772,  1,  1)
+		>>> print(rfgg.g2s(uchuu.gengou, 772,  1,  1))
 		2858-01-01 00:00:00
 		"""
 		for n in self.GENGOU_LIST:
