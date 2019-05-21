@@ -1,35 +1,35 @@
 #!/bin/sh
 
-PARENT=`dirname $0`
-if test "$PYTHON" ; then
-PYTHON=`which $PYTHON`
+run(){
+    ${PYTHON} `dirname $0`/rfGengouCmd.py $*
+    exit $?
+}
+
+PYTHON_CHECK="import sys;exit(not((sys.version_info[0]==3 and sys.version_info[1]>=3) or (sys.version_info[0]==2 and sys.version_info[1]>=3)))"
+
+if test -n "${PYTHON}" ; then
+    if ${PYTHON} -c "${PYTHON_CHECK}" >/dev/null 2>&1 ; then run ; fi
 fi
 
-if test -z "$PYTHON" ; then
-PYTHON=`which $PARENT/python2.7`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which $PARENT/python2.6`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which $PARENT/python2.5`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which $PARENT/python`
+for V in "" 3 3.8 3.7 3.6 3.5 3.4 3.3 2 2.7 2.6 2.5 2.4 2.3 ; do
+    PYTHON=python$V
+    if ${PYTHON} -c "${PYTHON_CHECK}" >/dev/null 2>&1 ; then run ; fi
+done
+
+if test -n "${PYENV_ROOT}" ; then
+for P in `ls -vrd ${PYENV_ROOT}/versions/*` ; do
+    PYTHON=$P/bin/python
+    if ${PYTHON} -c "${PYTHON_CHECK}" >/dev/null 2>&1 ; then run ; fi
+done
 fi
 
-if test -z "$PYTHON" ; then
-PYTHON=`which python2.7`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which python2.6`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which python2.5`
-fi
-if test -z "$PYTHON" ; then
-PYTHON=`which python`
+if test -d /Library/Frameworks/Python.framework ; then
+for V in 3.8 3.7 3.6 3.5 3.4 3.3 2.7 2.6 2.5 2.4 2.3 ; do
+    PYTHON=/Library/Frameworks/Python.framework/Versions/$V/bin/python$V
+    if ${PYTHON} -c "${PYTHON_CHECK}" >/dev/null 2>&1 ; then run ; fi
+done
 fi
 
-$PYTHON $PARENT/rfGengouCmd.py $*
-exit $?
+echo "python not found"
+echo "please install python 3.3 (or later) or 2.3 (or later)"
+exit 127
