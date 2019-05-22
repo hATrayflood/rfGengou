@@ -1,7 +1,7 @@
-from distutils.core import setup;
+from setuptools import setup
 setup(
 	name="rfGengou",
-	version="0.3",
+	version="0.4",
 	description="Translate A.D. to Regnal year, and other in Japanese.",
 	url="https://github.com/hATrayflood/rfGengou",
 	author="hATrayflood",
@@ -11,9 +11,15 @@ setup(
 	classifiers=(
 		"Development Status :: 4 - Beta",
 		"Environment :: Console",
+		"Intended Audience :: Developers",
 		"License :: OSI Approved :: MIT License",
 		"Natural Language :: Japanese",
-		"Programming Language :: Python :: 2 :: Only",
+		"Programming Language :: Python",
+		"Programming Language :: Python :: 2",
+		"Programming Language :: Python :: 3",
+		"Topic :: Office/Business",
+		"Topic :: Sociology :: Genealogy",
+		"Topic :: Sociology :: History",
 		"Topic :: Software Development :: Libraries :: Python Modules",
 		"Topic :: Text Processing :: Filters",
 	),

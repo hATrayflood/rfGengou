@@ -2,3 +2,5 @@
 .pypirc
 release/lucid
 release/precise
+dist/
+*.egg-info/
